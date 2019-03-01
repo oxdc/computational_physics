@@ -7,15 +7,16 @@
 #define FLT_LENGTH (sizeof(float) * BYTE_LENGTH)
 #define DBL_LENGTH (sizeof(double) * BYTE_LENGTH)
 
-typedef unsigned char Bit;
-typedef unsigned char Byte;
+#define Bit unsigned char
+#define Byte unsigned char
 
-void toBitArray(void* buffer, size_t length, Bit* dest)
+void toBitArray(void* buffer, unsigned int length, Bit* dest)
 {
 	Byte* p_buffer = (Byte*)buffer;
-	for (int c = (int)length - 1; c >= 0; c--)
+	int c = 0, i = 0;
+	for (c = (int)length - 1; c >= 0; c--)
 	{
-		for (int i = (int)BYTE_LENGTH - 1; i >= 0; i--)
+		for (i = (int)BYTE_LENGTH - 1; i >= 0; i--)
 		{
 			dest[(length - c) * BYTE_LENGTH - i - 1] = ((p_buffer[c] >> i) & 0x1);
 		}
@@ -24,11 +25,12 @@ void toBitArray(void* buffer, size_t length, Bit* dest)
 
 #define printBinary(value, type) \
 { \
-	const size_t LENGHT = sizeof(type) * BYTE_LENGTH; \
+	const unsigned int LENGHT = sizeof(type) * BYTE_LENGTH; \
 	Byte* bits = (Byte*)malloc(LENGHT); \
-	type v = value; \
+	type v = (value); \
 	toBitArray((void*)& v, sizeof(type), (void*)bits); \
-	for (size_t i = 0; i < LENGHT; i++) \
+	unsigned int i = 0; \
+	for (i = 0; i < LENGHT; i++) \
 	{ \
 		if (i % 4 == 0 && i != 0) printf(" "); \
 		printf("%u", bits[i]); \
@@ -42,6 +44,8 @@ int main(void) // `void` shouldn't be omitted!
 	printBinary(1.0 / 8.0, float);
 	printBinary(-1.0 / 8.0, float);
 	printBinary(0.375, float);
+	printBinary(-11.625, float);
+	printBinary(-11.625, double);
 
 	system("pause");
 
