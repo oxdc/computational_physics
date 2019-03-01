@@ -10,15 +10,16 @@
 #define Bit unsigned char
 #define Byte unsigned char
 
-void toBitArray(void* buffer, unsigned int length, Bit* dest)
+void toBitArray(void* buffer, unsigned int length, void* dest)
 {
 	Byte* p_buffer = (Byte*)buffer;
+	Bit* p_dest = (Bit*)dest;
 	int c = 0, i = 0;
 	for (c = (int)length - 1; c >= 0; c--)
 	{
 		for (i = (int)BYTE_LENGTH - 1; i >= 0; i--)
 		{
-			dest[(length - c) * BYTE_LENGTH - i - 1] = ((p_buffer[c] >> i) & 0x1);
+			p_dest[(length - c) * BYTE_LENGTH - i - 1] = ((p_buffer[c] >> i) & 0x1);
 		}
 	}
 }
